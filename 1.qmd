@@ -1,0 +1,20 @@
+---
+title: My Penguins Report
+author: David Keyes
+format: html
+execute: 
+  output: true
+  warning: false
+  echo: false
+  message: false
+---
+
+# Introduction
+
+This report is about **three** species of penguins
+
+1. Adele
+1. Gentoo
+1. Chinstrap
+
+You'll learn *so* much about the penguins. I hope you're ready!

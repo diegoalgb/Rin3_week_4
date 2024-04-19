@@ -1,0 +1,97 @@
+---
+title: "Holland Stam’s thesis work, titled Quantifying art historical narratives"
+author: "Diego Garcia"
+format: pdf
+date: today
+execute: 
+  echo: true
+  warning: false
+  message: false
+---
+
+## Dataset description
+
+"This package contains data that was used for Holland Stam’s thesis work, titled Quantifying art historical narratives. The data was collected to assess the demographic representation of artists through editions of Janson’s History of Art and Gardner’s Art Through the Ages, two of the most popular art history textbooks used in the American education system."
+
+<https://github.com/rfortherestofus/rin3-datasets/tree/main/getting-started-datasets/artists>
+
+## Packages used
+```{r}
+#| output: false
+
+library(tidyverse)
+library(ggthemes)
+library(knitr)
+```
+
+## Import data
+
+```{r}
+#| output: false
+
+artist <- read_csv("https://raw.githubusercontent.com/rfortherestofus/rin3-datasets/main/getting-started-datasets/artists/artists.csv")
+
+glimpse(artist)
+
+View(artist)
+```
+
+## Data wrangling
+
+### Find out which nationalities are the most prevalent
+
+```{r}
+#| output: false
+artist |>
+  count(artist_nationality) |>
+  arrange(desc(n))
+```
+
+### Using the top 4 nationalities, get a count of nationalities by gender
+
+```{r}
+#| output: false
+
+artist_count <- artist |>
+  select(artist_nationality, artist_gender) |>
+  filter(artist_nationality %in% c("American","French","British","German")) |>
+  mutate(artist_gender = fct(artist_gender, levels = c("Male", "Female", "N/A"))) |>
+  count(artist_nationality, artist_gender, .drop = FALSE)
+```
+
+```{r}
+#| label: tbl-artist
+#| tbl-cap: Top 4 nationalities by gender
+#| tbl-colwidths: [60,40]
+kable(head(artist_count))
+```
+
+## Data visualization
+
+```{r}
+#| echo: false
+#| label: fig-artists
+#| fig-cap: "Most frecuent artist nationalities by gender"
+#| fig-align: center
+#| warning: false
+
+ggplot(data = artist_count,
+       mapping = aes(x = fct_infreq(artist_nationality),
+                     y = n,
+                     fill = artist_gender,
+                     label = n)) +
+  geom_bar(stat ="identity", position = position_dodge(width = 1)) +
+  geom_text(position = position_dodge(width = 1),
+            hjust = 0.5,
+            vjust = -0.25) +
+  labs(title = str_wrap("Most frequent artist nationalities by gender through editions of Janson’s History of Art and Gardner’s Art Through the Ages", 60),
+       subtitle = "The most frequent nationalities are American and French",
+       caption = "Data from Rin3-practice datasest",
+       x = NULL,
+       y = "Nationality count",
+       fill = NULL) +
+  scale_y_continuous(limits = c(0, 1000)) +
+  theme_economist()
+
+```
+

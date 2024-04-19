@@ -1,0 +1,52 @@
+---
+title: Does not render
+format: html
+date: today
+execute: 
+  echo: true
+  warning: false
+  
+---
+
+## Meet the penguins
+
+the penguins data contain 
+
+```{r}
+#| output: false
+library(tidyverse)
+library()
+```
+
+
+```{r}
+#| label: chunk-id
+#| output: false
+
+library(tidyverse)
+library(palmerpenguins)
+palmerpenguins::penguins
+```
+
+```{r}
+#| echo: false
+#| output: true
+#| label: fig-
+#| warning: false
+
+penguins |>
+  ggplot(aes(x = flipper_length_mm, y = bill_length_mm)) +
+  geom_point(aes(color = species))
+
+```
+
+```{mermaid}
+
+flowchart LR
+  A[Hard edge] --> B(Round edge)
+  B --> C{Decision}
+  C --> D[Result one]
+  C --> E[Result two]
+```
+
+
