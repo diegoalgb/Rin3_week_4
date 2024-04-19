@@ -49,4 +49,6 @@ ggplot(data = artist_count,
        y = "Nationality count",
        fill = NULL) +
   scale_y_continuous(limits = c(0, 1000)) +
-  theme_economist()
+  theme_economist_white()
+
+
